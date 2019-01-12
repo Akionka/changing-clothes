@@ -77,5 +77,5 @@ function main()
 	sampRegisterChatCommand("unwear", function() lastskin = getCharModel(PLAYER_PED) sampSendChat(ini.settings.command)  unwear = 1 end)
 	sampRegisterChatCommand("wear", function () sampSendChat(ini.settings.command) wear = true end)
 	sampRegisterChatCommand("wearinv", function () if ini.settings.command == "/invex" then ini.settings.command = "/inv"
-	else ini.settings.command = "/invex"  end sampAddChatMessage(u8:decode("[CS]: Теперь для вызова инвентаря используется команда {2980b9}"..ini.settings.command.."{FFFFFF}."), -1) end)
+	else ini.settings.command = "/invex"  end sampAddChatMessage(u8:decode("[CC]: Теперь для вызова инвентаря используется команда {2980b9}"..ini.settings.command.."{FFFFFF}."), -1) end)
 end
