@@ -1,4 +1,4 @@
-script_name('Chaning Clothes')
+script_name('Changing Clothes')
 script_author('akionka')
 script_version('1.0')
 script_version_number(1)
