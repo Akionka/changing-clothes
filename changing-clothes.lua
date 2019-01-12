@@ -7,7 +7,7 @@ script_description([[{FFFFFF}Данный скрипт разработан Akio
  - Снимать ваш текущий скин, а после надевать его.
 
 Кстати, список команд:
-/wear | /unwear]])
+/wear | /unwear | /wearinv ]])
 script_properties("forced-reloading-only")
 
 local sampev = require 'lib.samp.events'
@@ -44,8 +44,6 @@ function sampev.onShowDialog(id, style, cap, b1, b2, text)
 		local i = 0 
 		for item in text:gmatch("[^\r\n]+") do
 			i = i + 1
-			print(lastskin ~= nil)
-			print(lastskin)
 			if lastskin ~= nil then
 				if item:find(u8:decode("Костюм #"..lastskin)) ~= nil
 					then sampSendDialogResponse(id, 1, i-1, "") return false
@@ -54,6 +52,13 @@ function sampev.onShowDialog(id, style, cap, b1, b2, text)
 				if item:find(u8:decode("Костюм #%d+")) ~= nil
 					then sampSendDialogResponse(id, 1, i-1, "") return false
 				end
+			end
+		end 
+		local i = 0
+		for item in text:gmatch("[^\r\n]+") do
+			i = i + 1
+			if item:find(u8:decode("Костюм #%d+")) ~= nil
+				then sampSendDialogResponse(id, 1, i-1, "") return false
 			end
 		end 
 	end
