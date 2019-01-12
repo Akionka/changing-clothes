@@ -25,7 +25,6 @@ local ini = inicfg.load({
 }, "changing-clothes")
 
 function sampev.onShowDialog(id, style, cap, b1, b2, text)
-	print(id, cap)
 	if id == 1000 and unwear == 1 then
 		local i = 0
 		for item in text:gmatch("[^\r\n]+") do
