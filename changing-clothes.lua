@@ -17,6 +17,7 @@ encoding.default = 'cp1251'
 u8 = encoding.UTF8
 local wear = false
 local unwear = 0
+local close = false
 local ini = inicfg.load({
   settings =
   {
@@ -34,6 +35,19 @@ function sampev.onShowDialog(id, style, cap, b1, b2, text)
 				unwear = 2 return false
 			end
 		end
+	end
+  if close and id == 1000 then
+		sampSendDialogResponse(id, 0, 0, "")
+		sampAddChatMessage(u8:decode("[MED]: {FF0000}Error!{FFFFFF} Подойдите ближе к месту для переодевания."), -1)
+    close = false
+    return false
+  end
+	if id == 998 and (unwear ~= 0 or wear == true) then
+		sampSendDialogResponse(id, 1, 0, "")
+    close = true
+    wear = false
+    unwear = 0
+		return false
 	end
 	if id == 1000 and unwear == 2 then
 		sampSendDialogResponse(id, 0, 0, "")
