@@ -1,7 +1,7 @@
 script_name('Changing Clothes')
 script_author('akionka')
-script_version('1.3')
-script_version_number(4)
+script_version('1.4')
+script_version_number(5)
 script_description([[{FFFFFF}Данный скрипт разработан Akionka с использованием идей коммьюнити Trinity GTA.
 Скрипт умеет:
  - Снимать ваш текущий скин, а после надевать его.
@@ -38,7 +38,7 @@ function sampev.onShowDialog(id, style, cap, b1, b2, text)
 	end
   if close and id == 1000 then
 		sampSendDialogResponse(id, 0, 0, "")
-		sampAddChatMessage(u8:decode("[MED]: {FF0000}Error!{FFFFFF} Подойдите ближе к месту для переодевания."), -1)
+		sampAddChatMessage(u8:decode("[CC]: {FF0000}Error!{FFFFFF} Подойдите ближе к месту для переодевания."), -1)
     close = false
     return false
   end
