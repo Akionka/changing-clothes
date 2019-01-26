@@ -1,7 +1,7 @@
 script_name('Changing Clothes')
 script_author('akionka')
-script_version('1.2')
-script_version_number(3)
+script_version('1.3')
+script_version_number(4)
 script_description([[{FFFFFF}Данный скрипт разработан Akionka с использованием идей коммьюнити Trinity GTA.
 Скрипт умеет:
  - Снимать ваш текущий скин, а после надевать его.
