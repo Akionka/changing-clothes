@@ -1,7 +1,7 @@
 script_name('Changing Clothes')
 script_author('akionka')
-script_version('1.4')
-script_version_number(5)
+script_version('1.5')
+script_version_number(6)
 script_description([[{FFFFFF}Данный скрипт разработан Akionka с использованием идей коммьюнити Trinity GTA.
 Скрипт умеет:
  - Снимать ваш текущий скин, а после надевать его.
@@ -43,7 +43,7 @@ function sampev.onShowDialog(id, style, cap, b1, b2, text)
     return false
   end
 	if id == 998 and (unwear ~= 0 or wear == true) then
-		sampSendDialogResponse(id, 1, 0, "")
+		sampSendDialogResponse(id, 0, 0, "")
     close = true
     wear = false
     unwear = 0
