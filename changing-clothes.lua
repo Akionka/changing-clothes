@@ -1,7 +1,7 @@
 script_name('Changing Clothes')
 script_author('akionka')
-script_version('1.1')
-script_version_number(2)
+script_version('1.2')
+script_version_number(3)
 script_description([[{FFFFFF}Данный скрипт разработан Akionka с использованием идей коммьюнити Trinity GTA.
 Скрипт умеет:
  - Снимать ваш текущий скин, а после надевать его.
@@ -29,7 +29,7 @@ function sampev.onShowDialog(id, style, cap, b1, b2, text)
 		local i = 0
 		for item in text:gmatch("[^\r\n]+") do
 			i = i + 1
-			if item:find(u8:decode("Костюм #%d+ .+")) ~= nil
+			if item:find(u8:decode("Костюм #%d+ .+")) ~= nil or item:find(u8:decode("Семейный костюм #%d+ .+")) ~= nil
 				then sampSendDialogResponse(id, 1, i-1, "")
 				unwear = 2 return false
 			end
@@ -45,11 +45,11 @@ function sampev.onShowDialog(id, style, cap, b1, b2, text)
 		for item in text:gmatch("[^\r\n]+") do
 			i = i + 1
 			if lastskin ~= nil then
-				if item:find(u8:decode("Костюм #"..lastskin)) ~= nil
+				if item:find(u8:decode("Костюм #"..lastskin)) ~= nil or item:find(u8:decode("Семейный костюм #"..lastskin)) ~= nil
 					then sampSendDialogResponse(id, 1, i-1, "") return false
 				end
 			else
-				if item:find(u8:decode("Костюм #%d+")) ~= nil
+				if item:find(u8:decode("Костюм #%d+")) ~= nil or item:find(u8:decode("Семейный костюм #%d+")) ~= nil
 					then sampSendDialogResponse(id, 1, i-1, "") return false
 				end
 			end
@@ -57,7 +57,7 @@ function sampev.onShowDialog(id, style, cap, b1, b2, text)
 		local i = 0
 		for item in text:gmatch("[^\r\n]+") do
 			i = i + 1
-			if item:find(u8:decode("Костюм #%d+")) ~= nil
+			if item:find(u8:decode("Костюм #%d+")) ~= nil or item:find(u8:decode("Семейный костюм #%d+")) ~= nil
 				then sampSendDialogResponse(id, 1, i-1, "") return false
 			end
 		end
