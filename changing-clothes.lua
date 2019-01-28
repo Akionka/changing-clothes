@@ -104,11 +104,12 @@ function sampev.onShowDialog(id, style, cap, b1, b2, text)
 			return false
 		end
 	elseif id == ids.error_too_far_away then
-		if state.unwear == states.SEARCH_SKIN or state.wear == states.CHOOSE_ACTION
-		sampAddChatMessage(u8:decode("[CC]: {FF0000}Error!{FFFFFF} Подойдите ближе к месту для переодевания."), -1)
-		state.wear = states.CLOSE_INV
-		state.unwear = states.CLOSE_INV
-		return false
+		if state.unwear == states.SEARCH_SKIN or state.wear == states.CHOOSE_ACTION then
+			sampAddChatMessage(u8:decode("[CC]: {FF0000}Error!{FFFFFF} Подойдите ближе к месту для переодевания."), -1)
+			state.wear = states.CLOSE_INV
+			state.unwear = states.CLOSE_INV
+			return false
+		end
 	end
 end
 
