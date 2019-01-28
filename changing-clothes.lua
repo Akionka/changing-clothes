@@ -21,68 +21,93 @@ local close = false
 local ini = inicfg.load({
   settings =
   {
-    invex = true
+    invex = true,
+		last_skin = nil
   },
 }, "akionka")
 
+local states = {
+	NONE = 0,
+	SEARCH_SKIN = 1,
+	CHOOSE_ACTION = 2,
+	CLOSE_INV = 3
+}
+local state = {
+	unwear = states.NONE,
+	wear = states.NONE,
+}
+local ids = {
+	error_too_far_away = 998,
+	main_inv = 1000,
+	choose_action = 1001
+}
+local skin = nil
+
 function sampev.onShowDialog(id, style, cap, b1, b2, text)
-	if id == 1000 and unwear == 1 then
-		local i = 0
-		for item in text:gmatch("[^\r\n]+") do
-			i = i + 1
-			if item:find(u8:decode("Костюм #%d+ .+")) ~= nil or item:find(u8:decode("Семейный костюм #%d+ .+")) ~= nil
-				then sampSendDialogResponse(id, 1, i-1, "")
-				unwear = 2 return false
+	if id == ids.main_inv then
+		if skin ~= nil and state.wear == states.SEARCH_SKIN then
+			local i = 0
+			for item in text:gmatch("[^\r\n]+") do
+				i = i + 1
+				if item:find(u8:decode("Костюм #"..skin)) ~= nil or item:find(u8:decode("Семейный костюм #"..skin)) ~= nil then
+					sampSendDialogResponse(id, 1, i-1, "")
+					state.wear = states.CHOOSE_ACTION
+					skin = nil
+					return false
+				end
 			end
 		end
-	end
-  if close and id == 1000 then
-		sampSendDialogResponse(id, 0, 0, "")
+		if state.wear == states.SEARCH_SKIN and ini.settings.last_skin ~= nil then
+			local i = 0
+			for item in text:gmatch("[^\r\n]+") do
+				i = i + 1
+				if item:find(u8:decode("Костюм #"..ini.settings.last_skin)) ~= nil or item:find(u8:decode("Семейный костюм #"..ini.settings.last_skin)) ~= nil then
+					sampSendDialogResponse(id, 1, i-1, "")
+					state.wear = states.CHOOSE_ACTION
+					return false
+				end
+			end
+		end
+		if state.wear == states.SEARCH_SKIN then
+			local i = 0
+			for item in text:gmatch("[^\r\n]+") do
+				i = i + 1
+				if item:find(u8:decode("Костюм #%d+")) ~= nil or item:find(u8:decode("Семейный костюм #%d+")) ~= nil then
+					sampSendDialogResponse(id, 1, i-1, "")
+					state.wear = states.CHOOSE_ACTION
+					return false
+				end
+			end
+		end
+		if state.unwear == states.SEARCH_SKIN then
+			local i = 0
+			for item in text:gmatch("[^\r\n]+") do
+				i = i + 1
+				if item:find(u8:decode("Костюм #%d+ .+")) ~= nil or item:find(u8:decode("Семейный костюм #%d+ .+")) ~= nil then
+					sampSendDialogResponse(id, 1, i-1, "")
+					state.unwear = states.CLOSE_INV
+					return false
+				end
+			end
+		end
+		if state.unwear == states.CLOSE_INV or state.unwear == states.CLOSE_INV then
+			sampSendDialogResponse(id, 0, 0, "")
+			state.wear = states.NONE
+			state.unwear = states.NONE
+			return false
+		end
+	elseif id == ids.choose_action then
+		if state.wear == states.CHOOSE_ACTION then
+			sampSendDialogResponse(id, 1, 5, "")
+			state.wear = states.CLOSE_INV
+			skin = nil
+			return false
+		end
+	elseif id == ids.error_too_far_away then
 		sampAddChatMessage(u8:decode("[CC]: {FF0000}Error!{FFFFFF} Подойдите ближе к месту для переодевания."), -1)
-    close = false
-    return false
-  end
-	if id == 998 and (unwear ~= 0 or wear == true) then
-		sampSendDialogResponse(id, 0, 0, "")
-    close = true
-    wear = false
-    unwear = 0
+		state.wear = states.CLOSE_INV
 		return false
 	end
-	if id == 1000 and unwear == 2 then
-		sampSendDialogResponse(id, 0, 0, "")
-		unwear = 0
-		return false
-	end
-	if id == 1000 and wear then
-		local i = 0
-		for item in text:gmatch("[^\r\n]+") do
-			i = i + 1
-			if lastskin ~= nil then
-				if item:find(u8:decode("Костюм #"..lastskin)) ~= nil or item:find(u8:decode("Семейный костюм #"..lastskin)) ~= nil
-					then sampSendDialogResponse(id, 1, i-1, "") return false
-				end
-			else
-				if item:find(u8:decode("Костюм #%d+")) ~= nil or item:find(u8:decode("Семейный костюм #%d+")) ~= nil
-					then sampSendDialogResponse(id, 1, i-1, "") return false
-				end
-			end
-		end
-		local i = 0
-		for item in text:gmatch("[^\r\n]+") do
-			i = i + 1
-			if item:find(u8:decode("Костюм #%d+")) ~= nil or item:find(u8:decode("Семейный костюм #%d+")) ~= nil
-				then sampSendDialogResponse(id, 1, i-1, "") return false
-			end
-		end
-	end
-	if id == 1001 and wear then
-		sampSendDialogResponse(id, 1, 5, "")
-		wear = false
-		lastskin = nil
-		return false
-	end
-	return true
 end
 
 function main()
@@ -90,8 +115,12 @@ function main()
   while not isSampAvailable() do wait(0) end
 	update()
 	while updateinprogess ~= false do wait(0) end
-	sampRegisterChatCommand("unwear", function() lastskin = getCharModel(PLAYER_PED) sampSendChat(ini.settings.invex and "/invex" or "/inv")  unwear = 1 end)
-	sampRegisterChatCommand("wear", function () sampSendChat(ini.settings.invex and "/invex" or "/inv") wear = true end)
+	sampRegisterChatCommand("unwear", function() ini.settings.last_skin = getCharModel(PLAYER_PED) inicfg.save(ini, "akionka") state.unwear = states.SEARCH_SKIN sampSendChat(ini.settings.invex and "/invex" or "/inv") end)
+	sampRegisterChatCommand("wear", function (params)
+		if tonumber(params) ~= nil then skin = tonumber(params) else skin = nil end
+		state.wear = states.SEARCH_SKIN
+		sampSendChat(ini.settings.invex and "/invex" or "/inv")
+	end)
 	sampRegisterChatCommand("wearinv", function ()
 		 ini.settings.invex = not ini.settings.invex
 		 sampAddChatMessage(u8:decode(ini.settings.invex and "[CC]: Теперь для вызова инвентаря используется команда {2980b9}/invex{FFFFFF}." or "[CC]: Теперь для вызова инвентаря используется команда {2980b9}/inv{FFFFFF}."), -1)
