@@ -1,7 +1,7 @@
 script_name('Changing Clothes')
 script_author('akionka')
-script_version('1.5')
-script_version_number(6)
+script_version('1.6')
+script_version_number(7)
 script_description([[{FFFFFF}Данный скрипт разработан Akionka с использованием идей коммьюнити Trinity GTA.
 Скрипт умеет:
  - Снимать ваш текущий скин, а после надевать его.
@@ -104,8 +104,10 @@ function sampev.onShowDialog(id, style, cap, b1, b2, text)
 			return false
 		end
 	elseif id == ids.error_too_far_away then
+		if state.unwear == states.SEARCH_SKIN or state.wear == states.CHOOSE_ACTION
 		sampAddChatMessage(u8:decode("[CC]: {FF0000}Error!{FFFFFF} Подойдите ближе к месту для переодевания."), -1)
 		state.wear = states.CLOSE_INV
+		state.unwear = states.CLOSE_INV
 		return false
 	end
 end
@@ -156,7 +158,7 @@ function goupdate()
 		if status1 == dlstatus.STATUS_ENDDOWNLOADDATA then
 			sampAddChatMessage((u8:decode('[CC]: Новая версия установлена! Чтобы скрипт обновился нужно либо перезайти в игру, либо ...')), -1)
 			sampAddChatMessage((u8:decode('[CC]: ... если у вас есть автоперезагрузка скриптов, то новая версия уже готова и снизу вы увидите приветственное сообщение.')), -1)
-			sampAddChatMessage((u8:decode('[CC]: Если что-то пошло не так, то сообщите мне об этом в VK или Telegram > {2980b0}vk.com/akionka tele.run/akionka{FFFFFF}.')), -1)
+			sampAddChatMessage((u8:decode('[CC]: Если что-то пошло не так, то сообщите мне об этом в VK или Telegram > {2980b0}vk.com/akionka teleg.run/akionka{FFFFFF}.')), -1)
 		end
 	end)
 end
