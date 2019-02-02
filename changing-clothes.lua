@@ -1,7 +1,7 @@
 script_name('Changing Clothes')
 script_author('akionka')
-script_version('1.6')
-script_version_number(7)
+script_version('1.7')
+script_version_number(8)
 script_description([[{FFFFFF}Данный скрипт разработан Akionka с использованием идей коммьюнити Trinity GTA.
 Скрипт умеет:
  - Снимать ваш текущий скин, а после надевать его.
@@ -160,6 +160,7 @@ function goupdate()
 			sampAddChatMessage((u8:decode('[CC]: Новая версия установлена! Чтобы скрипт обновился нужно либо перезайти в игру, либо ...')), -1)
 			sampAddChatMessage((u8:decode('[CC]: ... если у вас есть автоперезагрузка скриптов, то новая версия уже готова и снизу вы увидите приветственное сообщение.')), -1)
 			sampAddChatMessage((u8:decode('[CC]: Если что-то пошло не так, то сообщите мне об этом в VK или Telegram > {2980b0}vk.com/akionka teleg.run/akionka{FFFFFF}.')), -1)
+			updateinprogess = false
 		end
 	end)
 end
