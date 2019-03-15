@@ -1,7 +1,7 @@
 script_name('Changing Clothes')
 script_author('akionka')
-script_version('1.7')
-script_version_number(8)
+script_version('1.8')
+script_version_number(9)
 
 local sampev   = require 'lib.samp.events'
 local encoding = require 'encoding'
